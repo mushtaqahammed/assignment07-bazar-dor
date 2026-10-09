@@ -10,28 +10,24 @@ interface MarqueeType {
   change: { dir: "up" | "down" | "flat"; pct: number };
 }
 const Marquee = async () => {
-  const res = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
+  const res = await fetch(
+    "https://api.api-store.workers.dev/api/bazardor/products",
+  );
   if (!res.ok) {
     throw new Error("Products fetch failed");
   }
   const data: MarqueeType[] = await res.json();
   return (
     <div className="my-5 border-y border-gray-200 bg-white">
-      {" "}
       <MarqueeText className="py-1" direction="right" duration={40}>
-        {" "}
         {data.map((h) => (
           <span key={h.id}>
-            {" "}
             <Link className="hover:underline" href={`/productDetail/${h.id}`}>
-              {" "}
               <span className="mx-5">
-                {" "}
-                {h.categoryIcon} {h.nameBn}{" "}
+                {h.categoryIcon} {h.nameBn}
                 <span className="ml-3">
-                  {" "}
-                  {h.today.toLocaleString("bn-BD")} টাকা/কেজি{" "}
-                </span>{" "}
+                  {h.today.toLocaleString("bn-BD")} টাকা/কেজি
+                </span>
                 <span
                   className={
                     h.change.dir === "up"
@@ -41,19 +37,18 @@ const Marquee = async () => {
                         : "text-gray-500"
                   }
                 >
-                  {" "}
                   {h.change.dir === "up"
                     ? "▲"
                     : h.change.dir === "down"
                       ? "▼"
-                      : "—"}{" "}
-                  {h.change.pct.toLocaleString("bn-BD")}%{" "}
-                </span>{" "}
-              </span>{" "}
-            </Link>{" "}
+                      : "—"}
+                  {h.change.pct.toLocaleString("bn-BD")}%
+                </span>
+              </span>
+            </Link>
           </span>
-        ))}{" "}
-      </MarqueeText>{" "}
+        ))}
+      </MarqueeText>
     </div>
   );
 };
