@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface NavLinkType {
@@ -21,6 +22,10 @@ const NavLinks = () => {
       );
 
       const categories: NavLinkType[] = await res.json();
+  if (!categories) {
+    notFound();
+  }
+
       setData(categories);
     };
 

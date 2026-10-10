@@ -1,6 +1,7 @@
 import MarqueeText from "react-marquee-text";
 import "react-marquee-text/dist/styles.css";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 interface MarqueeType {
   nameBn: string;
   id: number;
@@ -17,6 +18,10 @@ const Marquee = async () => {
     throw new Error("Products fetch failed");
   }
   const data: MarqueeType[] = await res.json();
+  if (!data) {
+    notFound();
+  }
+
   return (
     <div className="my-5 border-y border-gray-200 bg-white">
       <MarqueeText className="py-1" direction="right" duration={40}>

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface Market {
   market: string;
@@ -40,6 +41,9 @@ const ProductDetail = async ({
   );
 
   const products: Product[] = await res.json();
+  if (!products) {
+    notFound();
+  }
 
   // URL এর id দিয়ে product খুঁজে বের করা
   const product = products.find((item) => item.id === Number(id));

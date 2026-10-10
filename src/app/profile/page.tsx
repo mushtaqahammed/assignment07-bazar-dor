@@ -12,6 +12,8 @@ const Profile = () => {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
+  
+
   const [name, setName] = useState("");
  
 

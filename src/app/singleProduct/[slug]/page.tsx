@@ -1,6 +1,6 @@
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
-
+import { notFound } from "next/navigation";
 
 interface Product {
   id: number;
@@ -37,9 +37,13 @@ const SingleProduct = async ({ params }: PageProps) => {
 
   const products: Product[] = await res.json();
 
-const categoryProducts = products.filter(
-  (product) => product.category === slug,
-);
+    if (!products) {
+      notFound();
+    }
+
+  const categoryProducts = products.filter(
+    (product) => product.category === slug,
+  );
 
   const categoryName = categoryProducts[0]?.categoryNameBn || "পণ্য";
 
@@ -58,7 +62,7 @@ const categoryProducts = products.filter(
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {products.map((product: Product) => (
+        {categoryProducts.map((product) => (
           <Link key={product.id} href={`/productDetail/${product.id}`}>
             <ProductCard product={product} />
           </Link>
