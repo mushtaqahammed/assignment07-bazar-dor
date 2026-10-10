@@ -13,7 +13,7 @@ const Profile = () => {
   const user = session?.user;
 
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+ 
 
   // Sign Out
   const handleSignOut = async () => {
@@ -27,7 +27,7 @@ const Profile = () => {
 
     const { data, error } = await authClient.updateUser({
       name,
-      image,
+   
     });
 
     if (error) {
@@ -110,7 +110,7 @@ const Profile = () => {
             <input
               type="text"
               name="name"
-              value={name || user.name || ""}
+              value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="আপনার নাম লিখুন"
               className="input input-bordered w-full"
@@ -129,5 +129,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;

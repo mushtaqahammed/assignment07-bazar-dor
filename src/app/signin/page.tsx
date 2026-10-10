@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { authClient } from "@/lib/auth-client";
 import React from "react";
@@ -23,6 +23,13 @@ const SignInPage = () => {
     if (error) {
       console.log(error);
     }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+    console.log(data);
   };
 
   return (
@@ -54,6 +61,7 @@ const SignInPage = () => {
           </button>
         </fieldset>
       </form>
+      <button className="btn bg-amber-400" onClick={handleGoogleSignIn}>sign in google</button>
     </div>
   );
 };
