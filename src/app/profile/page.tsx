@@ -17,11 +17,24 @@ const Profile = () => {
   const [name, setName] = useState("");
  
 
-  // Sign Out
-  const handleSignOut = async () => {
-    await authClient.signOut();
-    router.push("/signin");
-  };
+
+// Sign Out
+const handleSignOut = async () => {
+  const { error } = await authClient.signOut();
+
+  if (error) {
+    toast.error("Logout failed!");
+    return;
+  }
+
+  toast.success("Logged out successfully!");
+
+  router.push("/signin");
+  router.refresh();
+};
+
+
+
 
   // Update Profile
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

@@ -4,14 +4,15 @@ import ProductsPriceUp from "@/components/allProducts/ProductsPriceUp";
 import Banner from "@/components/Banner";
 
 
+
 export default function Home() {
   return (
     <div>
-      
       <div className="max-w-7xl  mx-auto">
+       
         <Banner />
         <ProductsPriceUp />
-        <ProductPriceDown/>
+        <ProductPriceDown />
         <AllProducts />
       </div>
     </div>

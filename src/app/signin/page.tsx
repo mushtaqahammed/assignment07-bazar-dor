@@ -3,6 +3,7 @@
 import { authClient } from "@/lib/auth-client";
 import React from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const SignInPage = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,15 +22,14 @@ const SignInPage = () => {
     });
 
     if (data) {
-      console.log(data);
+      toast.success("Account created successfully!");
     }
 
     if (error) {
-      console.log(error);
+      toast.error("Registration failed!");
     }
   };
-
-  const handleGoogleSignIn = async () => {
+ const handleGoogleSignIn = async () => {
     const data = await authClient.signIn.social({
       provider: "google",
       callbackURL: "/",

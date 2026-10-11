@@ -1,6 +1,6 @@
-import ProductCard from "@/components/ProductCard";
-import Link from "next/link";
+
 import { notFound } from "next/navigation";
+import SortableProductList from "@/components/SortableProductList.tsx";
 
 interface Product {
   id: number;
@@ -10,8 +10,8 @@ interface Product {
   categoryNameBn: string;
   unit: string;
   image: string;
-  today: number;
-  yesterday: number;
+  today: number | string;
+  yesterday: number | string;
   change: {
     dir: "up" | "down" | "flat";
     pct: number;
@@ -28,7 +28,7 @@ const SingleProduct = async ({ params }: PageProps) => {
   const { slug } = await params;
 
   const res = await fetch(
-    "https://openapi.programming-hero.com/api/bazardor/products",
+    "https://openapi.programming-hero.com/api/bazardor/products"
   );
 
   if (!res.ok) {
@@ -37,37 +37,38 @@ const SingleProduct = async ({ params }: PageProps) => {
 
   const products: Product[] = await res.json();
 
-    if (!products) {
-      notFound();
-    }
+  if (!Array.isArray(products)) {
+    throw new Error("Invalid products response");
+  }
 
   const categoryProducts = products.filter(
-    (product) => product.category === slug,
+    (product) => product.category === slug
   );
 
-  const categoryName = categoryProducts[0]?.categoryNameBn || "পণ্য";
+  if (categoryProducts.length === 0) {
+    notFound();
+  }
+
+  const categoryName =
+    categoryProducts[0]?.categoryNameBn || "পণ্য";
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-4">{categoryName}</h1>
+    <main className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mb-5 flex flex-wrap justify-between gap-3 rounded-2xl border border-gray-200 bg-white p-5 text-gray-500">
+        <p>বাজার দর — প্রয়োজনীয় পণ্যের দাম এক নজরে।</p>
+        <p>সকল দাম সম্ভাব্য; বাজার অবস্থার ওপর নির্ভর করে পরিবর্তিত হয়।</p>
+      </div>
 
-        <p className="text-gray-500 border border-gray-200 bg-white rounded-2xl p-5">
-          {categoryProducts.length}টি পণ্যের আজকের দাম ও পরিবর্তন
+      <div className="mb-6">
+        <h1 className="mb-4 text-3xl font-bold">{categoryName}</h1>
+
+        <p className="rounded-2xl border border-gray-200 bg-white p-5 text-gray-500">
+          {categoryProducts.length.toLocaleString("bn-BD")}
+          টি পণ্যের আজকের দাম ও পরিবর্তন
         </p>
       </div>
 
-      <p className="mt-6 mb-4 text-gray-500">
-        মোট {categoryProducts.length}টি পণ্য দেখানো হচ্ছে
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {categoryProducts.map((product) => (
-          <Link key={product.id} href={`/productDetail/${product.id}`}>
-            <ProductCard product={product} />
-          </Link>
-        ))}
-      </div>
+      <SortableProductList products={categoryProducts} />
     </main>
   );
 };

@@ -1,21 +1,36 @@
+
 "use client";
 
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const handleSignOut = async () => {
-  await authClient.signOut();
-  redirect("/signin");
-};
+import { toast } from "react-toastify";
 
 const UserInfo = () => {
+  const router = useRouter();
+
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
   const [open, setOpen] = useState(false);
+
+  // Sign Out
+  const handleSignOut = async () => {
+    const { error } = await authClient.signOut();
+
+    if (error) {
+      toast.error("Logout failed!");
+      return;
+    }
+
+    toast.success("Logged out successfully!");
+    setOpen(false);
+
+    router.push("/signin");
+    router.refresh();
+  };
 
   return (
     <div>
@@ -30,7 +45,7 @@ const UserInfo = () => {
               <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring-2 ring-offset-2">
                 <Image
                   alt="User Avatar"
-                  src={user?.image || "/default-avatar.png"}
+                  src={user.image || "/default-avatar.png"}
                   width={40}
                   height={40}
                 />
@@ -46,9 +61,13 @@ const UserInfo = () => {
             <div className="absolute right-0 top-14 z-50 w-64 rounded-xl border bg-white p-4 shadow-lg">
               {/* User Info */}
               <div className="border-b pb-3">
-                <h3 className="font-semibold text-gray-800">{user.name}</h3>
+                <h3 className="font-semibold text-gray-800">
+                  {user.name}
+                </h3>
 
-                <p className="text-sm text-gray-500">{user.email}</p>
+                <p className="text-sm text-gray-500">
+                  {user.email}
+                </p>
               </div>
 
               {/* Menu */}
@@ -78,7 +97,9 @@ const UserInfo = () => {
           </Link>
 
           <Link href="/signup">
-            <button className="btn bg-green-500 text-white">সাইন আপ</button>
+            <button className="btn bg-green-500 text-white">
+              সাইন আপ
+            </button>
           </Link>
         </div>
       )}
