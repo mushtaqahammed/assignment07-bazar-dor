@@ -78,12 +78,8 @@ const SortableProductList = ({ products }: Props) => {
               className="select select-success appearance-none pr-10"
             >
               <option value="default">ডিফল্ট</option>
-              <option value="low-to-high">
-                দাম: কম থেকে বেশি
-              </option>
-              <option value="high-to-low">
-                দাম: বেশি থেকে কম
-              </option>
+              <option value="low-to-high">দাম: কম থেকে বেশি</option>
+              <option value="high-to-low">দাম: বেশি থেকে কম</option>
             </select>
 
             <svg
@@ -101,23 +97,26 @@ const SortableProductList = ({ products }: Props) => {
           </div>
         </div>
       </div>
-
       <p className="mb-4 mt-6 text-gray-500">
         মোট {sortedProducts.length.toLocaleString("bn-BD")}
         টি পণ্য দেখানো হচ্ছে
       </p>
-
+    
       {/* Product Grid */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         {sortedProducts.map((product) => (
-          <Link
-            key={product.id}
-            href={`/productDetail/${product.id}`}
-          >
-            <ProductCard product={product} />
+          <Link key={product.id} href={`/productDetail/${product.id}`}>
+            <ProductCard
+              product={{
+                ...product,
+                today: toNumber(product.today),
+                yesterday: toNumber(product.yesterday),
+              }}
+            />
           </Link>
         ))}
       </div>
+      
     </>
   );
 };

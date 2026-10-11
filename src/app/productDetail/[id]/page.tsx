@@ -17,7 +17,7 @@ interface Product {
   categoryNameBn: string;
   unit: string;
   image: string;
-  today: number;
+  today: number | string;
   yesterday: number;
   change: {
     dir: "up" | "down" | "flat";
@@ -112,7 +112,8 @@ const ProductDetail = async ({
                   : product.change.dir === "down"
                     ? "কমেছে"
                     : "অপরিবর্তিত"}{" "}
-                · {Math.abs(product.today - product.yesterday)} টাকা
+                · {Math.abs(Number(product.today) - Number(product.yesterday))}{" "}
+                টাকা
               </p>
             </div>
           </div>

@@ -8,7 +8,7 @@ interface Product {
   categoryNameBn: string;
   unit: string;
   image: string;
-  today: number;
+  today: number | string;
   yesterday: number;
   change: {
     dir: "up" | "down" | "flat";
